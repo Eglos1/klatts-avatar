@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kLattsch Avatar — 1B LLM + Vocal Synth + 3D Body</title>
+<link rel="stylesheet" href="style.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "/vendor/three/three.module.js",
+    "three/addons/": "/vendor/three-addons/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="dot"></span>
+    <h1>kLattsch&nbsp;Avatar</h1>
+    <span class="tag" id="modelTag">llama3.2:1b</span>
+  </div>
+  <nav>
+    <a href="https://klatts.ch/play/" target="_blank" rel="noopener" class="btn-link">klatts.ch/play ↗</a>
+    <button id="embedToggle" class="btn-link">Show klattsch embed</button>
+  </nav>
+</header>
+
+<main>
+  <!-- 3D stage -->
+  <section id="stage">
+    <canvas id="scene"></canvas>
+    <div id="status" class="status hidden"></div>
+    <div id="speakingLine" class="speaking-line"></div>
+  </section>
+
+  <!-- Chat / control panel -->
+  <aside id="panel">
+    <div id="log" class="log"></div>
+
+    <div class="controls">
+      <label class="ctrl">
+        <span>Mode</span>
+        <select id="mode">
+          <option value="llm">LLM chat (1B model replies)</option>
+          <option value="direct">Direct speech (no LLM)</option>
+        </select>
+      </label>
+
+      <label class="ctrl">
+        <span>Emotion / voice character</span>
+        <select id="emotion">
+          <option value="auto">Auto (LLM picks)</option>
+          <option value="warm" selected>Warm</option>
+          <option value="excited">Excited</option>
+          <option value="calm">Calm</option>
+          <option value="playful">Playful</option>
+          <option value="sad">Sad</option>
+          <option value="serious">Serious</option>
+          <option value="surprised">Surprised</option>
+        </select>
+      </label>
+
+      <label class="ctrl">
+        <span>Expressiveness <b id="exprVal">60%</b></span>
+        <input type="range" id="expr" min="0" max="120" value="60" />
+      </label>
+
+      <label class="ctrl">
+        <span>Voice pitch <b id="pitchVal">120 Hz</b></span>
+        <input type="range" id="pitch" min="60" max="260" value="120" />
+      </label>
+
+      <label class="ctrl">
+        <span>Speaking rate <b id="rateVal">110 ms/ph</b></span>
+        <input type="range" id="rate" min="60" max="300" value="110" />
+      </label>
+
+      <label class="ctrl">
+        <span>Vibrato <b id="vibVal">3.5 Hz</b></span>
+        <input type="range" id="vib" min="0" max="9" value="3.5" step="0.5" />
+      </label>
+
+      <label class="ctrl">
+        <span>Breathiness <b id="brVal">0.06</b></span>
+        <input type="range" id="br" min="0" max="0.25" value="0.06" step="0.01" />
+      </label>
+    </div>
+
+    <form id="inputForm" autocomplete="off">
+      <textarea id="input" rows="2"
+        placeholder="Type something… Enter = send (LLM chat) / Shift+Enter = newline"></textarea>
+      <button id="sendBtn" type="submit">▶ Speak</button>
+    </form>
+
+    <details class="phonemes-box">
+      <summary>directive + phoneme stream (klattsch ARPABET)</summary>
+      <code id="phonemesOut"></code>
+    </details>
+  </aside>
+</main>
+
+<div id="embedWrap" class="hidden">
+  <iframe id="klattsEmbed" src="https://klatts.ch/play/" title="klatts.ch/play — retro vocal synth"></iframe>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
